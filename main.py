@@ -42,7 +42,7 @@ def get_conversation_chain(vectorstore):
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
     llm = HuggingFacePipeline.from_model_id(
-        model_id="google/flan-t5-base",  # You can change to flan-t5-large or other
+        model_id="google/flan-t5-base",
         task="text2text-generation",
         pipeline_kwargs={"max_new_tokens": 512, "temperature": 0.3}
     )
