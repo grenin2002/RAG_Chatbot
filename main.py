@@ -2,14 +2,15 @@ import streamlit as st
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import HuggingFaceInstructEmbeddings
-from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceInstructEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
 from langchain.memory import ConversationBufferMemory
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
-from langchain_huggingface.llms import HuggingFacePipeline
+from langchain_community.llms import HuggingFacePipeline
 from streamlit_chat import message
 
+#print(HuggingFacePipeline)
 
 
 def get_pdf_text(pdf_docs):                             #loop through pdf, loop through each pages of pdf, concatenate text
@@ -42,7 +43,7 @@ def get_conversation_chain(vectorstore):
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
     llm = HuggingFacePipeline.from_model_id(
-        model_id="google/flan-t5-base",
+        model_id="google/flan-t5-base",  # You can change to flan-t5-large or other
         task="text2text-generation",
         pipeline_kwargs={"max_new_tokens": 512, "temperature": 0.3}
     )
@@ -81,7 +82,7 @@ def main():
 
                     # get the text chunks
                     text_chunks = get_text_chunks(raw_text)
-                    #st.write(text_chunks)
+                    st.write(text_chunks)
 
                     # create vector store
                     vectorstore = get_vectorstore(text_chunks)
@@ -112,3 +113,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
